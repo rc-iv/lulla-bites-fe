@@ -27,13 +27,13 @@ const Login = () => {
   };
 
   return (
-    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+    <div className="flex flex-1 flex-col justify-center px-6 mt-12 lg:px-8">
       <div className="mx-auto w-full max-w-sm">
         <Image
           alt="lullabites logo"
           src="/images/logo.png"
-          width={200}
-          height={200}
+          width={100}
+          height={100}
           className="rounded-full mx-auto"
         />
         <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-thistle-800 dark:text-jetstream-100">
@@ -103,15 +103,7 @@ const Login = () => {
             Forgot password?
           </a>
         </div>
-        <p className="mt-4 text-center text-sm text-thistle-800 dark:text-jetstream-100">
-          Not a member?{" "}
-          <a
-            href="#"
-            className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
-          >
-            Start a 14 day free trial
-          </a>
-        </p>
+        
       </div>
     </div>
   );
