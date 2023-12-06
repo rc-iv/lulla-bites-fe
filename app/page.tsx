@@ -8,7 +8,7 @@ export default function Home() {
           <div className="lg:px-4">
             <h1 className="text-4xl font-bold mb-4 ">Welcome to Lullabites</h1>
             <p className="text-lg mb-6">
-              Your trusted companion for tracking your baby's sleep and eating
+              Your trusted companion for tracking your babys sleep and eating
               habits. Lorem ipsum, dolor sit amet consectetur adipisicing elit.
               Dolorum, voluptate obcaecati veniam libero facere eveniet
               inventore fugit ut excepturi. Itaque animi impedit rem nisi
@@ -56,7 +56,7 @@ export default function Home() {
           <div className="lg:px-4">
             <h2 className="text-3xl font-bold mb-4">Insights and Analytics</h2>
             <p className="text-lg mb-6">
-              Gain insights into your baby's habits with detailed analytics and
+              Gain insights into your babys habits with detailed analytics and
               reports. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolore amet quos voluptatem asperiores repellat placeat, veritatis, nisi labore quae numquam temporibus dolorem, et quasi quo minus animi. Itaque fugiat nihil molestias non. At ad iure ex fugit quod, repudiandae voluptatum. Lorem ipsum dolor sit amet consectetur adipisicing elit. In asperiores assumenda cupiditate! Nam perferendis reiciendis omnis, nostrum consequuntur distinctio in corrupti voluptates officiis ex numquam doloremque aperiam fugit vel alias iure sapiente velit. Tenetur soluta blanditiis iusto, porro quis voluptatibus?
             </p>
           </div>
