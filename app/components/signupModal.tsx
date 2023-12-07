@@ -1,4 +1,6 @@
+import { on } from "events";
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface SignupModalProps {
   isVisible: boolean;
@@ -8,6 +10,12 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [singupError, setSignupError] = useState({
+    isError: false,
+    message: "",
+  });
+
+  const router = useRouter();
 
   const createUserUrl =
     "https://ml5d6fgpi8.execute-api.us-east-1.amazonaws.com/dev/createUser";
@@ -25,13 +33,19 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose }) => {
         password: password,
       }),
     });
+    console.log(`response: ${response.status}`);
     const data = await response.json();
-    console.log(data);
-    if (data.statusCode === 200) {
-      alert("User created successfully");
-      onClose();
-    } else {
-      alert("Error creating user");
+    console.log(`data: ${JSON.stringify(data)}`);
+    if (response.status === 200) {
+        router.push("/signedUp");
+    }
+
+    if (response.status === 400) {
+      setSignupError({ isError: true, message: data.message });
+    }
+
+    if (response.status === 500) {
+      setSignupError({ isError: true, message: data.message });
     }
   };
 
@@ -48,6 +62,9 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose }) => {
             <label htmlFor="email" className="block mb-2">
               Email Address
             </label>
+            {singupError.isError && (
+              <p className="text-red-500 text-xs italic">User already exists</p>
+            )}
             <input
               type="email"
               id="email"

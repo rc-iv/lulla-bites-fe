@@ -6,24 +6,42 @@ import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { useAppSelector } from "../redux/store";
 
-
 const Login = () => {
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loginError, setLoginError] = useState({ isError: false, message: "" });
   const dispatch = useDispatch();
   const router = useRouter();
 
   const user = useAppSelector((state) => state.user);
 
   useEffect(() => {
-    console.log(user.isLoggedIn)
+    console.log(user.isLoggedIn);
     if (user.isLoggedIn) {
       router.push("/dashboard");
     }
   }, [user, router]);
 
-  const onClickLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const onClickLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    dispatch(login(email));
+    const loginUrl =
+      "https://ml5d6fgpi8.execute-api.us-east-1.amazonaws.com/dev/loginUser";
+    const response = await fetch(loginUrl, {
+      method: "POST",
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    });
+
+    const data = await response.json();
+    console.log(`data: ${JSON.stringify(data)}`);
+    if (response.status === 200) {
+      dispatch(login(email));
+      router.push("/dashboard");
+    } else {
+      setLoginError({ isError: true, message: data.message });
+    }
   };
 
   return (
@@ -78,6 +96,7 @@ const Login = () => {
                 name="password"
                 type="password"
                 autoComplete="current-password"
+                onChange={(e) => setPassword(e.target.value)}
                 required
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-thistle-400 dark:focus:ring-jetstream-700 sm:text-sm sm:leading-6"
               />
@@ -92,6 +111,13 @@ const Login = () => {
             >
               Sign in
             </button>
+            {loginError.isError && (
+              <div className="text-center mt-2">
+                <p className="text-red-500 text-s italic">
+                  {loginError.message}
+                </p>
+              </div>
+            )}
           </div>
         </form>
 
@@ -103,7 +129,6 @@ const Login = () => {
             Forgot password?
           </a>
         </div>
-        
       </div>
     </div>
   );
