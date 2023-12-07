@@ -1,11 +1,10 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useAppSelector } from "../redux/store";
 import { useDispatch } from "react-redux";
 import { login } from "../redux/features/userSlice";
 
-const verifyPage = () => {
+const VerifyPage = () => {
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState({
     isError: false,
@@ -17,7 +16,6 @@ const verifyPage = () => {
   const email = searchParams.get("email");
   const code = searchParams.get("code");
 
-  const user = useAppSelector((state) => state.user);
   const dispatch = useDispatch();
 
   console.log(`email: ${email}, code: ${code}`);
@@ -61,4 +59,4 @@ const verifyPage = () => {
   );
 };
 
-export default verifyPage;
+export default VerifyPage;
