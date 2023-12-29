@@ -8,23 +8,33 @@ interface addFeedingRecordModalProps {
 
 export interface FeedingRecord {
   FeedType: string;
-  FeedAmount: number;
+  FeedAmount: string;
   FeedNotes: string;
   DateTime: string;
 }
 
-const feedTypes = ["bottle", "breast", "solid", "formula"];
-const defaultFeedType = "bottle";
+const formatDateForInput = () => {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = `${now.getMonth() + 1}`.padStart(2, "0");
+  const day = `${now.getDate()}`.padStart(2, "0");
+  const hours = `${now.getHours()}`.padStart(2, "0");
+  const minutes = `${now.getMinutes()}`.padStart(2, "0");
+
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
+};
+
+const feedTypes = ["Bottle", "Breast", "Solid", "Formula"];
 
 const AddFeedingRecordModal = ({
   isVisible,
   onClose,
   onSubmit,
 }: addFeedingRecordModalProps) => {
-  const [feedType, setFeedType] = useState("bottle");
-  const [feedAmount, setFeedAmount] = useState(0);
+  const [feedType, setFeedType] = useState("Bottle");
+  const [feedAmount, setFeedAmount] = useState("");
   const [feedNotes, setFeedNotes] = useState("");
-  const [dateTime, setDateTime] = useState(new Date().toISOString());
+  const [dateTime, setDateTime] = useState(formatDateForInput());
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -38,9 +48,68 @@ const AddFeedingRecordModal = ({
     onClose();
   };
 
+  const renderFeedAmountInput = () => {
+    switch (feedType) {
+      case "Bottle":
+      case "Formula":
+        return (
+          <div className="mb-4">
+            <label htmlFor="feedAmount" className="block mb-2">
+              Ounces Fed
+            </label>
+            <input
+              type="number"
+              id="feedAmount"
+              placeholder="Amount in ounces"
+              value={feedAmount}
+              onChange={(e) => setFeedAmount(e.target.value)}
+              className="w-full p-2 border rounded"
+              required
+            />
+          </div>
+        );
+      case "Breast":
+        return (
+          <div className="mb-4">
+            <label htmlFor="feedAmount" className="block mb-2">
+              Time Fed
+            </label>
+            <input
+              type="number"
+              id="feedAmount"
+              placeholder="Time feeding (minutes)"
+              value={feedAmount}
+              onChange={(e) => setFeedAmount(e.target.value)}
+              className="w-full p-2 border rounded"
+              required
+            />
+          </div>
+        );
+      case "Solid":
+        return (
+          <div className="mb-4">
+            <label htmlFor="feedAmount" className="block mb-2">
+              Type of Solid Food
+            </label>
+            <input
+              type="text"
+              id="feedAmount"
+              placeholder="Type of solid food"
+              value={feedAmount}
+              onChange={(e) => setFeedAmount(e.target.value)}
+              className="w-full p-2 border rounded"
+            />
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
+
   if (!isVisible) {
     return null;
   }
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center text-black">
       <div className="bg-white w-full md:w-1/3 p-8 lg:p-20 rounded-md">
@@ -64,19 +133,7 @@ const AddFeedingRecordModal = ({
               ))}
             </select>
           </div>
-          <div className="mb-4">
-            <label htmlFor="feedAmount" className="block mb-2">
-              Feed Amount (ounces)
-            </label>
-            <input
-              type="number"
-              id="feedAmount"
-              value={feedAmount}
-              onChange={(e) => setFeedAmount(parseInt(e.target.value))}
-              className="w-full p-2 border rounded"
-              required
-            />
-          </div>
+          {renderFeedAmountInput()}
           <div className="mb-4">
             <label htmlFor="feedNotes" className="block mb-2">
               Feed Notes
