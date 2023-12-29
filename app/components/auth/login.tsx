@@ -1,10 +1,10 @@
 "use client";
 import React, { use, useState, useEffect } from "react";
 import Image from "next/image";
-import { login } from "../redux/features/userSlice";
+import { login } from "../../redux/features/userSlice";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
-import { useAppSelector } from "../redux/store";
+import { useAppSelector } from "../../redux/store";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -45,7 +45,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-1 flex-col justify-center px-6 mt-12 lg:px-8">
+    <div className="flex flex-1 flex-col justify-center px-6 mt-4 lg:mt-12">
       <div className="mx-auto w-full max-w-sm">
         <Image
           alt="lullabites logo"
@@ -107,7 +107,7 @@ const Login = () => {
             <button
               type="submit"
               onClick={onClickLogin}
-              className="flex w-full justify-center rounded-md bg-jetstream-700 dark:bg-jetstream-500 px-3 py-1.5 text-sm font-semibold leading-6 text-jetstream-100 dark:text-thistle-900 shadow-sm hover:bg-jetstream-800 dark:hover:bg-thistle-800 dark:hover:text-jetstream-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+              className="flex w-full justify-center rounded-md bg-jetstream-700 dark:bg-jetstream-500 px-3 py-1.5 text-sm font-semibold leading-6 text-jetstream-100 dark:text-thistle-900 shadow-sm hover:bg-jetstream-800 dark:hover:bg-jetstream-800 dark:hover:text-jetstream-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
             >
               Sign in
             </button>

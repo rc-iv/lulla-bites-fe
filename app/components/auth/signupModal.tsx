@@ -55,7 +55,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isVisible, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center text-black">
-      <div className="bg-white p-4 rounded">
+      <div className="bg-white w-full md:w-1/3 p-8 lg:p-20 rounded-md">
         <h2 className="text-lg font-bold mb-4">Sign Up</h2>
         <form onSubmit={handleSignup}>
           <div className="mb-4">

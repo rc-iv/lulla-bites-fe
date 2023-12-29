@@ -1,9 +1,9 @@
 "use client";
 import React, { useState } from "react";
-import Login from "../components/login";
+import Login from "../components/auth/login";
 import { useAppSelector } from "../redux/store";
 import { useRouter } from "next/navigation";
-import SignupModal from "../components/signupModal";
+import SignupModal from "../components/auth/signupModal";
 
 const LoginPage = () => {
   const user = useAppSelector((state) => state.user);
@@ -25,18 +25,19 @@ const LoginPage = () => {
   }
 
   return (
-    <main className="flex min-h-2/3 flex-col items-center justify-between md:px-24">
+    <main className="flex min-h-2/3 w-full flex-col items-center justify-between md:px-24">
       <Login />
-      <p className="text-center text-sm text-thistle-800 dark:text-jetstream-100 mt-2">
+      <div
+        className="rounded-lg p-4 hover:cursor-pointer bg-thistle-800 text-jetstream-300 hover:bg-jetstream-300 hover:text-thistle-900 dark:bg-jetstream-800 dark:text-thistle-300 mt-4  dark:hover:bg-thistle-300 dark:hover:text-jetstream-900"
+        onClick={openSignupModal}
+      >
+        <p className="text-center text-sm">
           Not a member?{" "}
-          <a
-            href="#"
-            onClick = {openSignupModal}
-            className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
-          >
+          <span className="font-semibold leading-6 hover:text-indigo-500">
             Start a 14 day free trial
-          </a>
+          </span>
         </p>
+      </div>
       <SignupModal
         isVisible={isSignupModalVisible}
         onClose={closeSignupModal}
