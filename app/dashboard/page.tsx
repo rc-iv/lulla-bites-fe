@@ -108,16 +108,25 @@ const Dashboard = () => {
     // Function to fetch feeding records
     const fetchFeedingRecords = async () => {
       const apiUrl = 'https://ml5d6fgpi8.execute-api.us-east-1.amazonaws.com/dev/getFeedingRecordByDate';
+      // get todays date
+      const today = new Date();
+      // convert it to user's timezone
+      today.setHours(today.getHours() - today.getTimezoneOffset() / 60);
+      
+      const formattedDated = today.toISOString().slice(0, 10);
+
+      console.log(`Fetching feeding records for date: ${formattedDated}`)
       try {
         const response = await fetch(apiUrl, {
           method: 'POST',
           body: JSON.stringify({
             UserID: userId,
-            Date: new Date().toISOString().split('T')[0] // Fetch records for the current date
+            Date: formattedDated
           }),
         });
         const data = await response.json();
-        setFeedingRecords(data.Items || []);
+        console.log(`data: ${JSON.stringify(data)}`);
+        setFeedingRecords(data || []);
       } catch (error) {
         console.error('Error fetching feeding records:', error);
       }
@@ -141,7 +150,7 @@ const Dashboard = () => {
                 onAddClick={openAddFeedingRecordModal}
               >
                 {feedingRecords.map((record:FeedRecordPayload) => (
-                  <FeedingRecordCard record={record} />
+                  <FeedingRecordCard record={record} key={record.DateTime+record.UserID}/>
                 ))}
               </RecordCard>
             </div>
