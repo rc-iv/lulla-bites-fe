@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAppSelector } from "../redux/store";
 import AddFeedingRecordModal from "../components/recordModals/addFeedingRecordModal";
 import { FeedingRecord } from "../components/recordModals/addFeedingRecordModal";
@@ -7,6 +7,7 @@ import AddSleepRecordModal, {
   SleepRecord,
 } from "../components/recordModals/addSleepRecordModal";
 import RecordCard from "../components/records/recordCard";
+import FeedingRecordCard from "../components/records/feedingRecord";
 
 interface SleepRecordPayload {
   UserID: string;
@@ -18,10 +19,10 @@ interface SleepRecordPayload {
   DateTime: string;
 }
 
-interface FeedRecordPayload {
+export interface FeedRecordPayload {
   UserID: string;
   FeedType: string;
-  FeedAmount: number;
+  FeedAmount: string;
   FeedNotes: string;
   DateTime: string;
 }
@@ -33,6 +34,8 @@ const Dashboard = () => {
     useState<boolean>(false);
   const user = useAppSelector((state) => state.user);
   const userId = user.userId;
+
+  const [feedingRecords, setFeedingRecords] = useState([]);
 
   const openAddFeedingRecordModal = () => {
     setIsAddFeedingRecordModalVisible(true);
@@ -85,7 +88,6 @@ const Dashboard = () => {
       DateTime: sleepRecord.DateTime,
     };
 
-    console.log(JSON.stringify(payload));
     const addSleepRecordUrl =
       "https://ml5d6fgpi8.execute-api.us-east-1.amazonaws.com/dev/addSleepRecord";
     const addRecord = async () => {
@@ -99,6 +101,30 @@ const Dashboard = () => {
     };
     addRecord();
   };
+
+
+
+  useEffect(() => {
+    // Function to fetch feeding records
+    const fetchFeedingRecords = async () => {
+      const apiUrl = 'https://ml5d6fgpi8.execute-api.us-east-1.amazonaws.com/dev/getFeedingRecordByDate';
+      try {
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          body: JSON.stringify({
+            UserID: userId,
+            Date: new Date().toISOString().split('T')[0] // Fetch records for the current date
+          }),
+        });
+        const data = await response.json();
+        setFeedingRecords(data.Items || []);
+      } catch (error) {
+        console.error('Error fetching feeding records:', error);
+      }
+    };
+
+    fetchFeedingRecords();
+  }, [userId]);
 
   return (
     <div className="h-screen">
@@ -114,7 +140,9 @@ const Dashboard = () => {
                 title="Feeding Records"
                 onAddClick={openAddFeedingRecordModal}
               >
-                Test 123
+                {feedingRecords.map((record:FeedRecordPayload) => (
+                  <FeedingRecordCard record={record} />
+                ))}
               </RecordCard>
             </div>
             <div>
